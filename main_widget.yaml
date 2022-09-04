@@ -1,0 +1,425 @@
+uid: main_widget
+tags: []
+props:
+  parameterGroups: []
+timestamp: Sep 4, 2022, 8:29:14 PM
+component: f7-block
+config:
+  style:
+    display: flex
+    flex-direction: column
+    height: calc(100vh - var(--f7-toolbar-height) - var(--f7-safe-area-bottom) - var(--f7-navbar-height) - var(--f7-safe-area-top))
+    justify-content: space-between
+    margin: 0
+    padding: 0
+    widht: 100vh
+slots:
+  default:
+    - component: f7-block
+      config:
+        style:
+          flex: 0 0 auto
+          overflow: scroll
+      slots:
+        default:
+          - component: f7-segmented
+            config:
+              style:
+                flex: 1 1 auto
+            slots:
+              default:
+                - component: oh-repeater
+                  config:
+                    fragment: true
+                    for: baseMenu
+                    sourceType: array
+                    in:
+                      - name: Home
+                      - name: Floors
+                      - name: Rooms
+                    map: loop.baseMenu.name
+                  slots:
+                    default:
+                      - component: oh-button
+                        config:
+                          action: variable
+                          actionVariable: selectSection
+                          actionVariableValue: ="SECTION" + loop.baseMenu_idx
+                          large: true
+                          style:
+                            color: '=vars.selectSection=="SECTION" + loop.baseMenu_idx ? "black" : "#8C8C8C"'
+                            font-size: 30px
+                            font-weight: 200
+                            text-decoration: underline
+                            text-decoration-color: '=vars.selectSection=="SECTION" + loop.baseMenu_idx ? "#F8BB00" : "transparent"'
+                            text-underline-offset: 4px
+                          text: =loop.baseMenu
+          - component: f7-row
+            config:
+              visible: =!!(vars.selectSection == "SECTION0")
+              style:
+                display: flex
+                flex-direction: row
+                justify-content: space-between
+                align-items: center
+                flex-wrap: nowrap
+                width: 100%
+                height: 2em
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexHome
+                    actionVariableValue: =(vars.buttonIndexHome || 0) - 1
+                    iconF7: chevron_left
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+                - component: f7-row
+                  config:
+                    style:
+                      display: flex
+                      justify-content: center
+                      overflow: hidden
+                  slots:
+                    default:
+                      - component: oh-repeater
+                        config:
+                          fetchMetadata: semantics,uiSemantics
+                          fragment: true
+                          for: menuButtonHome
+                          itemTags: Home
+                          sourceType: itemsWithTags
+                          map: loop.menuButtonHome_source[(((vars.buttonIndexHome || 0) % loop.menuButtonHome_source.length) + loop.menuButtonHome_source.length + loop.menuButtonHome_idx) % loop.menuButtonHome_source.length]
+                        slots:
+                          default:
+                            - component: oh-button
+                              config:
+                                action: variable
+                                actionVariable: floor
+                                actionVariableValue: =loop.menuButtonHome.name
+                                text: =loop.menuButtonHome.name
+                                style:
+                                  flex: 0 0 auto
+                                  color: '=vars.floor ==loop.menuButtonHome.name ? "black" : "#8C8C8C"'
+                                  text-decoration: underline
+                                  text-decoration-color: '=vars.floor ==loop.menuButtonHome.name ? "#F8BB00" : "transparent"'
+                                  text-underline-offset: 4px
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexHome
+                    actionVariableValue: =(vars.buttonIndexHome || 0) + 1
+                    iconF7: chevron_right
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+          - component: f7-row
+            config:
+              visible: =!!(vars.selectSection == "SECTION1")
+              style:
+                display: flex
+                flex-direction: row
+                justify-content: space-between
+                align-items: center
+                flex-wrap: nowrap
+                width: 100%
+                height: 2em
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexFloor
+                    actionVariableValue: =(vars.buttonIndexFloor || 0) - 1
+                    iconF7: chevron_left
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+                - component: f7-row
+                  config:
+                    style:
+                      display: flex
+                      justify-content: center
+                      overflow: hidden
+                  slots:
+                    default:
+                      - component: oh-repeater
+                        config:
+                          fetchMetadata: semantics,uiSemantics
+                          fragment: true
+                          for: menuButtonFloor
+                          itemTags: Floor
+                          sourceType: itemsWithTags
+                          map: loop.menuButtonFloor_source[(((vars.buttonIndexFloor || 0) % loop.menuButtonFloor_source.length) + loop.menuButtonFloor_source.length + loop.menuButtonFloor_idx) % loop.menuButtonFloor_source.length]
+                        slots:
+                          default:
+                            - component: oh-button
+                              config:
+                                action: variable
+                                actionVariable: floor
+                                actionVariableValue: =loop.menuButtonFloor.name
+                                text: =loop.menuButtonFloor.name
+                                style:
+                                  flex: 0 0 auto
+                                  color: '=vars.floor ==loop.menuButtonFloor.name ? "black" : "#8C8C8C"'
+                                  text-decoration: underline
+                                  text-decoration-color: '=vars.floor ==loop.menuButtonFloor.name ? "#F8BB00" : "transparent"'
+                                  text-underline-offset: 4px
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexFloor
+                    actionVariableValue: =(vars.buttonIndexFloor || 0) + 1
+                    iconF7: chevron_right
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+          - component: f7-row
+            config:
+              visible: =!!(vars.selectSection == "SECTION2")
+              style:
+                display: flex
+                flex-direction: row
+                justify-content: space-between
+                align-items: center
+                flex-wrap: nowrap
+                width: 100%
+                height: 2em
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexRoom
+                    actionVariableValue: =(vars.buttonIndexRoom || 0) - 1
+                    iconF7: chevron_left
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+                - component: f7-row
+                  config:
+                    style:
+                      display: flex
+                      justify-content: center
+                      overflow: hidden
+                  slots:
+                    default:
+                      - component: oh-repeater
+                        config:
+                          fetchMetadata: semantics,uiSemantics
+                          fragment: true
+                          for: menuButtonRoom
+                          itemTags: Room
+                          sourceType: itemsWithTags
+                          map: loop.menuButtonRoom_source[(((vars.buttonIndexRoom || 0) % loop.menuButtonRoom_source.length) + loop.menuButtonRoom_source.length + loop.menuButtonRoom_idx) % loop.menuButtonRoom_source.length]
+                        slots:
+                          default:
+                            - component: oh-button
+                              config:
+                                action: variable
+                                actionVariable: floor
+                                actionVariableValue: =loop.menuButtonRoom.name
+                                text: =loop.menuButtonRoom.name
+                                style:
+                                  flex: 0 0 auto
+                                  color: '=vars.floor ==loop.menuButtonRoom.name ? "black" : "#8C8C8C"'
+                                  text-decoration: underline
+                                  text-decoration-color: '=vars.floor ==loop.menuButtonRoom.name ? "#F8BB00" : "transparent"'
+                                  text-underline-offset: 4px
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: buttonIndexRoom
+                    actionVariableValue: =(vars.buttonIndexRoom || 0) + 1
+                    iconF7: chevron_right
+                    style:
+                      flex: 0 0 auto
+                      color: "#F8BB00"
+    - component: f7-block
+      config:
+        style:
+          flex: 1 1 auto
+          overflow: scroll
+      slots:
+        default:
+          - component: widget:Temp_Control
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION1DIV2Climate")
+              widgettrend: HeizungWohnzimmer_Temperature
+          - component: widget:Temp_Control
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Climate")
+              widgettrend: HeizungWohnzimmer_Temperature
+          - component: widget:Temp_Control
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Climate")
+              widgettrend: HeizungWohnzimmer_Temperature
+          - component: widget:Temp_Control
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Climate")
+              widgettrend: HeizungWohnzimmer_Temperature
+          - component: widget:Temp_Control
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Climate")
+              widgettrend: HeizungWohnzimmer_Temperature
+          - component: oh-cell
+            config:
+              icon: f7:lightbulb
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              subtitle: only for testing
+              title: I am a light card in the Bedroom
+              visible: =!!(vars.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Lights")
+          - component: oh-cell
+            config:
+              icon: f7:lightbulb
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              subtitle: only for testing
+              title: I am a light card in the Home
+              visible: =!!(vars.selectSection == "SECTION1")
+          - component: Label
+            config:
+              style:
+                flex: 1 1 auto
+                overflow-y: auto
+                position: relative
+              text: =vars.selectSection + vars.floor
+    - component: f7-block
+      config:
+        style:
+          flex: 0 0 auto
+          overflow: scroll
+      slots:
+        default:
+          - component: f7-segmented
+            config:
+              class:
+                - segmented-strong
+              style:
+                --f7-segmented-strong-between-buttons: 0px
+                --f7-segmented-strong-bg-color: transparent
+                --f7-segmented-strong-button-font-weight: 300
+                --f7-segmented-strong-button-hover-bg-color: rgba(255, 255, 255, 0.15)
+                --f7-segmented-strong-padding: 0px
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: selectThing
+                    actionVariableValue: Lights
+                    class:
+                      - padding-top-half
+                      - display-flex
+                      - flex-direction-column
+                    fill: '=vars.selectThing=="Lights" ? true : false'
+                    icon-f7: lightbulb
+                    iconColor: black
+                    iconSize: 20
+                    style:
+                      --f7-button-bg-color: '=vars.selectThing=="Lights" ? "#F8BB00" : "transparent"'
+                      --f7-button-border-radius: 15px
+                      --f7-button-hover-bg-color: '=vars.selectThing=="Lights" ? "F8BB00" : "transparent"'
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-button-text-color: '=vars.selectThing=="Lights" ? "#6A6A6A" : "#8C8C8C"'
+                      font-size: 12px
+                      height: auto
+                    text: Lights
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: selectThing
+                    actionVariableValue: Climate
+                    class:
+                      - padding-top-half
+                      - display-flex
+                      - flex-direction-column
+                    fill: '=vars.selectThing=="Climate" ? true : false'
+                    icon-f7: snow
+                    iconColor: black
+                    iconSize: 20
+                    style:
+                      --f7-button-bg-color: '=vars.selectThing=="Climate" ? "#F8BB00" : "transparent"'
+                      --f7-button-border-radius: 15px
+                      --f7-button-hover-bg-color: '=vars.selectThing=="Climate" ? "F8BB00" : "transparent"'
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-button-text-color: '=vars.selectThing=="Climate" ? "#6A6A6A" : "#8C8C8C"'
+                      font-size: 12px
+                      height: auto
+                    text: Climate
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: selectThing
+                    actionVariableValue: Rollers
+                    class:
+                      - padding-top-half
+                      - display-flex
+                      - flex-direction-column
+                    fill: '=vars.selectThing=="Rollers" ? true : false'
+                    icon-f7: archivebox
+                    iconColor: black
+                    iconSize: 20
+                    style:
+                      --f7-button-bg-color: '=vars.selectThing=="Rollers" ? "#F8BB00" : "transparent"'
+                      --f7-button-border-radius: 15px
+                      --f7-button-hover-bg-color: '=vars.selectThing=="Rollers" ? "F8BB00" : "transparent"'
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-button-text-color: '=vars.selectThing=="Rollers" ? "#6A6A6A" : "#8C8C8C"'
+                      font-size: 12px
+                      height: auto
+                    text: Rollers
+                - component: oh-button
+                  config:
+                    action: variable
+                    actionVariable: selectThing
+                    actionVariableValue: Security
+                    class:
+                      - padding-top-half
+                      - display-flex
+                      - flex-direction-column
+                    fill: '=vars.selectThing=="Security" ? true : false'
+                    icon-f7: camera
+                    iconColor: black
+                    iconSize: 20
+                    style:
+                      --f7-button-bg-color: '=vars.selectThing=="Security" ? "#F8BB00" : "transparent"'
+                      --f7-button-border-radius: 15px
+                      --f7-button-hover-bg-color: '=vars.selectThing=="Security" ? "F8BB00" : "transparent"'
+                      --f7-button-padding-horizontal: 0px
+                      --f7-button-padding-vertical: 0px
+                      --f7-button-text-color: '=vars.selectThing=="Security" ? "#6A6A6A" : "#8C8C8C"'
+                      font-size: 12px
+                      height: auto
+                    text: Security
+

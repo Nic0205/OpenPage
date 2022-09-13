@@ -1,15 +1,21 @@
 uid: main_widget
 tags: []
 props:
-  parameterGroups: []
   parameters:
-    - name: textColor
-      label: Text color
-      type: TEXT
+    - default: black
       description: Set default color for Text
-      default: black
+      label: Text color
+      name: textColor
       required: false
-timestamp: Sep 9, 2022, 4:08:33 PM
+      type: TEXT
+    - default: Somewhere
+      description: Name for your weather location
+      label: Weather Location
+      name: locationTitle
+      required: false
+      type: TEXT
+  parameterGroups: []
+timestamp: Sep 11, 2022, 10:27:24 PM
 component: f7-block
 config:
   style:
@@ -72,7 +78,7 @@ slots:
                 height: 2em
                 justify-content: space-between
                 width: 100%
-              visible: =!!(vars.objVar.selectSection == "SECTION0")
+              visible: '=vars.objVar ? (vars.objVar.selectSection=="SECTION0") ? true : false : false'
             slots:
               default:
                 - component: oh-button
@@ -85,38 +91,45 @@ slots:
                       color: "#F8BB00"
                       flex: 0 0 auto
                       height: 2em
-                - component: f7-row
+                - component: oh-repeater
                   config:
-                    style:
-                      display: flex
-                      justify-content: center
-                      overflow: hidden
-                      height: 2em
+                    for: menuArray
+                    fragment: true
+                    sourceType: itemsWithTags
+                    itemTags: Home
+                    fetchMetadata: widgetOrder
+                    map: loop.menuArray_source
                   slots:
                     default:
-                      - component: oh-repeater
+                      - component: f7-row
                         config:
-                          fetchMetadata: semantics,uiSemantics
-                          for: menuButtonHome
-                          fragment: true
-                          itemTags: Home
-                          map: loop.menuButtonHome_source[(((vars.buttonIndexHome || 0) % loop.menuButtonHome_source.length) + loop.menuButtonHome_source.length + loop.menuButtonHome_idx) % loop.menuButtonHome_source.length]
-                          sourceType: itemsWithTags
+                          style:
+                            display: flex
+                            height: 2em
+                            justify-content: center
+                            overflow: hidden
                         slots:
                           default:
-                            - component: oh-button
+                            - component: oh-repeater
                               config:
-                                action: variable
-                                actionVariable: floor
-                                actionVariableValue: =loop.menuButtonHome.name
-                                style:
-                                  color: '=vars.floor ==loop.menuButtonHome.name ? textColor : "#8C8C8C"'
-                                  flex: 0 0 auto
-                                  text-decoration: underline
-                                  text-decoration-color: '=vars.floor ==loop.menuButtonHome.name ? "#F8BB00" : "transparent"'
-                                  text-underline-offset: 4px
-                                  height: 2em
-                                text: =loop.menuButtonHome.label
+                                for: menuButtonHome
+                                fragment: true
+                                in: =loop.menuArray
+                                filter: loop.menuArray_idx == 0
+                                map: ((loop.menuButtonHome.metadata && loop.menuButtonHome.metadata.widgetOrder && loop.menuButtonHome.metadata.widgetOrder.value) || 0).toString().padStart(3,'0') + '&' + loop.menuButtonHome_idx
+                              slots:
+                                default:
+                                  - component: oh-button
+                                    config:
+                                      action: variable
+                                      actionVariable: floor
+                                      actionVariableValue: =loop.menuArray[loop.menuButtonHome_source.sort()[loop.menuButtonHome_idx].split('&')[1]].name
+                                      style:
+                                        flex: 0 0 auto
+                                        height: 2em
+                                        order: =(((vars.buttonIndexHome || 0) % loop.menuButtonHome_source.length) + loop.menuButtonHome_source.length + loop.menuButtonHome_idx) % loop.menuButtonHome_source.length
+                                      text: =loop.menuArray[loop.menuButtonHome_source.sort()[loop.menuButtonHome_idx].split('&')[1]].label
+
                 - component: oh-button
                   config:
                     action: variable
@@ -126,7 +139,12 @@ slots:
                     style:
                       color: "#F8BB00"
                       flex: 0 0 auto
-                      height: 2em
+                      height: 2em                     
+                      
+                      
+                      
+                      
+                      
           - component: f7-row
             config:
               style:
@@ -137,7 +155,7 @@ slots:
                 height: 2em
                 justify-content: space-between
                 width: 100%
-              visible: =!!(vars.objVar.selectSection == "SECTION1")
+              visible: '=vars.objVar ? (vars.objVar.selectSection=="SECTION1") ? true : false : false'
             slots:
               default:
                 - component: oh-button
@@ -150,38 +168,51 @@ slots:
                       color: "#F8BB00"
                       flex: 0 0 auto
                       height: 2em
-                - component: f7-row
+                - component: oh-repeater
                   config:
-                    style:
-                      display: flex
-                      justify-content: center
-                      overflow: hidden
-                      height: 2em
+                    for: menuArray
+                    fragment: true
+                    sourceType: itemsWithTags
+                    itemTags: Floor
+                    fetchMetadata: widgetOrder
+                    map: loop.menuArray_source
                   slots:
                     default:
-                      - component: oh-repeater
+                      - component: f7-row
                         config:
-                          fetchMetadata: semantics,uiSemantics
-                          for: menuButtonFloor
-                          fragment: true
-                          itemTags: Floor
-                          map: loop.menuButtonFloor_source[(((vars.buttonIndexFloor || 0) % loop.menuButtonFloor_source.length) + loop.menuButtonFloor_source.length + loop.menuButtonFloor_idx) % loop.menuButtonFloor_source.length]
-                          sourceType: itemsWithTags
+                          style:
+                            display: flex
+                            height: 2em
+                            justify-content: center
+                            overflow: hidden
                         slots:
                           default:
-                            - component: oh-button
+                            - component: oh-repeater
                               config:
-                                action: variable
-                                actionVariable: floor
-                                actionVariableValue: =loop.menuButtonFloor.name
-                                style:
-                                  color: '=vars.floor ==loop.menuButtonFloor.name ? textColor : "#8C8C8C"'
-                                  flex: 0 0 auto
-                                  text-decoration: underline
-                                  text-decoration-color: '=vars.floor ==loop.menuButtonFloor.name ? "#F8BB00" : "transparent"'
-                                  text-underline-offset: 4px
-                                  height: 2em
-                                text: =loop.menuButtonFloor.label
+                                for: menuButtonFloor
+                                fragment: true
+                                in: =loop.menuArray
+                                filter: loop.menuArray_idx == 0
+                                map: ((loop.menuButtonFloor.metadata && loop.menuButtonFloor.metadata.widgetOrder && loop.menuButtonFloor.metadata.widgetOrder.value) || 0).toString().padStart(3,'0') + '&' + loop.menuButtonFloor_idx
+                              slots:
+                                default:
+                                  - component: oh-button
+                                    config:
+                                      action: variable
+                                      actionVariable: floor
+                                      actionVariableValue: =loop.menuArray[loop.menuButtonFloor_source.sort()[loop.menuButtonFloor_idx].split('&')[1]].name
+                                      style:
+                                        flex: 0 0 auto
+                                        height: 2em
+                                        order: =(((vars.buttonIndexFloor || 0) % loop.menuButtonFloor_source.length) + loop.menuButtonFloor_source.length + loop.menuButtonFloor_idx) % loop.menuButtonFloor_source.length
+                                        color: '=vars.room ==(loop.menuButtonRoom.name) ? textColor : "#8C8C8C"'
+                                
+                                        text-decoration: underline
+                                        text-decoration-color: '=vars.floor ==loop.menuButtonFloor.name ? "#F8BB00" : "transparent"'
+                                        text-underline-offset: 4px
+                                
+                                      text: =loop.menuArray[loop.menuButtonFloor_source.sort()[loop.menuButtonFloor_idx].split('&')[1]].label
+
                 - component: oh-button
                   config:
                     action: variable
@@ -202,7 +233,7 @@ slots:
                 height: 2em
                 justify-content: space-between
                 width: 100%
-              visible: =!!(vars.objVar.selectSection == "SECTION2")
+              visible: '=vars.objVar ? (vars.objVar.selectSection=="SECTION2") ? true : false : false'
             slots:
               default:
                 - component: oh-button
@@ -219,9 +250,9 @@ slots:
                   config:
                     style:
                       display: flex
+                      height: 2em
                       justify-content: center
                       overflow: hidden
-                      height: 2em
                   slots:
                     default:
                       - component: oh-repeater
@@ -242,10 +273,10 @@ slots:
                                 style:
                                   color: '=vars.room ==loop.menuButtonRoom.name ? textColor : "#8C8C8C"'
                                   flex: 0 0 auto
+                                  height: 2em
                                   text-decoration: underline
                                   text-decoration-color: '=vars.room ==loop.menuButtonRoom.name ? "#F8BB00" : "transparent"'
                                   text-underline-offset: 4px
-                                  height: 2em
                                 text: =loop.menuButtonRoom.label
                 - component: oh-button
                   config:
@@ -264,6 +295,14 @@ slots:
           overflow: scroll
       slots:
         default:
+          - component: widget:main_widget_Weather_Card
+            config:
+              bigCard: true
+              dateFormat: true
+              itemPrefix: OneCallAPIweatherandforecast_
+              locationTitle: =props.locationTitle
+              sunIndicator: true
+              visible: '=(!vars.objVar || ((vars.objVar.selectSection=="SECTION0") && !vars.objVar.selectThing)) ? true : false'
           - component: oh-repeater
             config:
               fetchMetadata: semantics,metadata,listWidget
@@ -276,17 +315,16 @@ slots:
                 - component: oh-repeater
                   config:
                     fetchMetadata: semantics,metadata,listWidget
+                    filter: '(loop.shutterItem.type=="Rollershutter") ? true : false'
                     for: shutterItem
                     groupItem: =loop.equipmentItem.name
                     sourceType: itemsInGroup
-                    filter: '(loop.shutterItem.type=="Rollershutter") ? true : false'
                   slots:
                     default:
-                      - component: widget:Cell_Shutter_Card_1
+                      - component: widget:main_widget_Rollershutter_Card
                         config:
+                          RollerItem: =loop.shutterItem.name
                           visible: '=vars.objVar.selectThing=="Rollers" ? true : false'
-                          header: =loop.shutterItem.label + " (" + loop.shutterItem.name + ")"
-                          item: =loop.shutterItem.name
           - component: oh-repeater
             config:
               fetchMetadata: semantics,metadata,listWidget
@@ -296,27 +334,42 @@ slots:
               sourceType: itemsWithTags
             slots:
               default:
+                - component: widget:main_widget_Light_Card
+                  config:
+                    equipmentItem: =loop.equipmentItem.name
+                    visible: '=vars.objVar.selectThing=="Lights" ? true : false'
+          - component: oh-repeater
+            config:
+              fetchMetadata: semantics,metadata,listWidget
+              filter: loop.equipmentItem.metadata.semantics.config.hasLocation == vars.room
+              for: equipmentItem
+              itemTags: RadiatorControl
+              sourceType: itemsWithTags
+            slots:
+              default:
                 - component: oh-repeater
                   config:
                     fetchMetadata: semantics,metadata,listWidget
-                    for: switchItem
+                    for: tempItem
                     groupItem: =loop.equipmentItem.name
                     sourceType: itemsInGroup
-                    filter: '(loop.switchItem.type=="Switch") ? true : false'
                   slots:
                     default:
-                      - component: widget:Cell_Light_Card_2
+                      - component: widget:Temp_Control
                         config:
-                          visible: '=vars.objVar.selectThing=="Lights" ? true : false'
-                          header: =loop.switchItem.label + " (" + loop.switchItem.name + ")"
-                          item_schalter: =loop.switchItem.name
+                          style:
+                            flex: 1 1 auto
+                            overflow-y: auto
+                            position: relative
+                          visible: '=vars.objVar.selectThing=="Climate" ? true : false'
+                          widgettrend: =loop.tempItem.name
           - component: oh-label-card
             config:
-
-              title: I am Just a test for the upcoming security Menu
-              label: =vars.objVar.selectSection
               footer: = vars.objVar.selectThing
-              visible: =!!(vars.objVar.selectSection + vars.objVar.selectThing == "SECTION0Security")
+              label: =vars.objVar.selectSection
+              text: '=(props.item) ? "State of " + props.item : "Set props to test!"'
+              title: I am Just a test for the upcoming security Menu
+              visible: '=vars.objVar ? ((vars.objVar.selectSection + vars.objVar.selectThing)=="SECTION0Security") ? true : false : false'
           - component: widget:Temp_Control
             config:
               style:
@@ -357,26 +410,6 @@ slots:
                 position: relative
               visible: =!!(vars.objVar.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Climate")
               widgettrend: HeizungWohnzimmer_Temperature
-          - component: oh-cell
-            config:
-              icon: f7:lightbulb
-              style:
-                flex: 1 1 auto
-                overflow-y: auto
-                position: relative
-              subtitle: only for testing
-              title: I am a light card in the Bedroom
-              visible: =!!(vars.objVar.selectSection + vars.selectDivision + vars.selectThing == "SECTION2DIV2Lights")
-          - component: oh-cell
-            config:
-              icon: f7:lightbulb
-              style:
-                flex: 1 1 auto
-                overflow-y: auto
-                position: relative
-              subtitle: only for testing
-              title: I am a light card in the Home
-              visible: =!!(vars.objVar.selectSection == "SECTION1")
           - component: Label
             config:
               style:
@@ -384,12 +417,13 @@ slots:
                 overflow-y: auto
                 position: relative
               text: =vars.objVar.selectSection + vars.floor
+              visible: "=vars.objVar ? true : false"
     - component: f7-block
       config:
-        visible: =(vars.objVar.selectSection == "SECTION0")
         style:
           flex: 0 0 auto
           overflow: scroll
+        visible: '=vars.objVar ? (vars.objVar.selectSection=="SECTION0") ? true : false : false'
       slots:
         default:
           - component: f7-segmented
@@ -506,10 +540,10 @@ slots:
                     text: HVAC
     - component: f7-block
       config:
-        visible: =(vars.objVar.selectSection == "SECTION1" || vars.objVar.selectSection == "SECTION2")
         style:
           flex: 0 0 auto
           overflow: scroll
+        visible: '=vars.objVar ? (vars.objVar.selectSection=="SECTION0") ? false : true : false'
       slots:
         default:
           - component: f7-segmented
@@ -599,3 +633,4 @@ slots:
                       font-size: 12px
                       height: auto
                     text: Rollers
+
